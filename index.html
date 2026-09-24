@@ -24,7 +24,7 @@ h2{font-size:17px;margin:0 0 16px}
 .bar>i{display:block;height:100%;background:var(--blue);transition:.3s}
 .opt{display:block;width:100%;text-align:right;padding:13px 16px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;margin-bottom:8px;cursor:pointer}
 .opt.sel{border:2px solid var(--blue);background:rgba(11,95,165,.1);color:var(--blue);font-weight:700}
-input[type=number],input[type=text]{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:16px;margin-bottom:12px;background:var(--card);color:var(--text)}
+input[type=number],input[type=text]{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:16px;margin-bottom:20px;background:var(--card);color:var(--text)}
 .btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:13px;font-weight:700;font-size:14px;cursor:pointer}
 .btn.ghost{background:var(--card);color:var(--blue);border:1px solid var(--blue)}
 .btn.dark{background:var(--dark)}
@@ -71,6 +71,7 @@ const QUESTIONS=[
 ];
 
 function fmt(n){return Math.round(n).toLocaleString("en-US")}
+function b64url(str){return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
 
 function evaluate(a){
 const inc=parseFloat(a.income)||0, obl=parseFloat(a.obligations)||0;
@@ -138,8 +139,8 @@ function renderThanks(){
 const app=document.getElementById("app");
 const leadId="l"+Date.now()+Math.random().toString(36).slice(2,7);
 const data=Object.assign({id:leadId,ts:Date.now()},answers);
-const payload=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-const link=AGENT_PAGE+"#lead="+encodeURIComponent(payload);
+const payload=b64url(JSON.stringify(data));
+const link=AGENT_PAGE+"#lead="+payload;
 const msg="📋 عميل جديد: "+(answers.name||"")+"\nاضغط لعرض التفاصيل الكاملة:\n"+link;
 const wa="https://wa.me/"+AGENT_WHATSAPP+"?text="+encodeURIComponent(msg);
 app.innerHTML=`
